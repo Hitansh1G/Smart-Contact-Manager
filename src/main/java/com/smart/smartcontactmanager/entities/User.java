@@ -2,9 +2,12 @@ package com.smart.smartcontactmanager.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="USER")
-public class user {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -17,9 +20,20 @@ public class user {
     @Column(length = 500)
     private String about;
 
-    public user(){
+    @OneToMany(mappedBy = "User", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Contact> Contacts = new ArrayList<>();
+    public User(){
         super();
     }
+
+    public List<Contact> getContacts() {
+        return Contacts;
+    }
+
+    public void setContacts(List<Contact> Contacts) {
+        this.Contacts = Contacts;
+    }
+
     public int getId() {
         return id;
     }
