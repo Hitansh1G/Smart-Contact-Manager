@@ -20,7 +20,7 @@ public class User {
     @Column(length = 500)
     private String about;
 
-    @OneToMany(mappedBy = "User", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
     private List<Contact> Contacts = new ArrayList<>();
     public User(){
         super();
