@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
 
-    @RequestMapping("/home")
+    @RequestMapping("/")
     public String home(Model model){
         model.addAttribute("title", "Home - Smart Contact");
         return "home";
@@ -21,6 +21,11 @@ public class HomeController {
     public String about(Model model){
         model.addAttribute("title", "About - Smart Contact");
         return "about";
+    }
+    @RequestMapping("/signup")
+    public String signup(Model model){
+        model.addAttribute("title", "Register - Smart Contact");
+        return "signup";
     }
 
 //    @Autowired
