@@ -1,16 +1,19 @@
 package com.smart.smartcontactmanager.Controller;
 
+import com.smart.helper.Message;
 import com.smart.smartcontactmanager.dao.UserRepository;
 import com.smart.smartcontactmanager.entities.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class HomeController {
+    @Autowired
+    private UserRepository userRepository;
 
     @RequestMapping("/")
     public String home(Model model){
@@ -25,7 +28,41 @@ public class HomeController {
     @RequestMapping("/signup")
     public String signup(Model model){
         model.addAttribute("title", "Register - Smart Contact");
+        model.addAttribute("user", new User());
         return "signup";
+    }
+
+    @RequestMapping(value="/do_register",method = RequestMethod.POST)
+    public String registerUser(@ModelAttribute("user") User user,
+                               @RequestParam(value = "agreement",defaultValue = "false")
+                               boolean agreement,
+                               Model model,
+                               HttpSession httpSession){
+        try {
+            if(!agreement){
+                System.out.println("you have not agreed the terms and conditions ");
+                throw new Exception("you have not agreed the terms and conditions ");
+            }
+
+            user.setRole("ROLE_USER");
+            user.setEnabled(true);
+            user.setImageUrl("default.png");
+
+            System.out.println("Agreement"+ true);
+            System.out.println("User"+user);
+
+            User result = this.userRepository.save(user);
+
+            model.addAttribute("user",new User());
+            httpSession.setAttribute("message",new Message("Successfully Registered","alert-success"));
+            return "signup";
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("user",user);
+            httpSession.setAttribute("message",new Message("Something went wrong" + e.getMessage(),"alert-danger"));
+            return "signup";
+        }
     }
 
 //    @Autowired

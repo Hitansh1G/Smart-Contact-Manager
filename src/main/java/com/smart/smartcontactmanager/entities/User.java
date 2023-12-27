@@ -16,6 +16,7 @@ public class User {
     private String email;
     private String password;
     private boolean enabled;
+    private String role;
     private String imageUrl;
     @Column(length = 500)
     private String about;
@@ -88,6 +89,29 @@ public class User {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", role='" + role + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", about='" + about + '\'' +
+                ", Contacts=" + Contacts +
+                '}';
     }
 }
 
