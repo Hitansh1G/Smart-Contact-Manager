@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class HomeController {
@@ -33,7 +36,8 @@ public class HomeController {
     }
 
     @RequestMapping(value="/do_register",method = RequestMethod.POST)
-    public String registerUser(@ModelAttribute("user") User user,
+    public String registerUser(@Valid @ModelAttribute("user") User user,
+                               BindingResult bindingResult,
                                @RequestParam(value = "agreement",defaultValue = "false")
                                boolean agreement,
                                Model model,
@@ -42,6 +46,12 @@ public class HomeController {
             if(!agreement){
                 System.out.println("you have not agreed the terms and conditions ");
                 throw new Exception("you have not agreed the terms and conditions ");
+            }
+
+            if(bindingResult.hasErrors()){
+                System.out.println("error "+bindingResult.toString());
+                model.addAttribute("user",user);
+                return "signup";
             }
 
             user.setRole("ROLE_USER");
