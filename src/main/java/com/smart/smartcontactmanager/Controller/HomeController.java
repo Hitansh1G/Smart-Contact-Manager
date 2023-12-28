@@ -6,10 +6,12 @@ import com.smart.smartcontactmanager.entities.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.validation.Valid;
 
@@ -17,6 +19,11 @@ import javax.validation.Valid;
 public class HomeController {
     @Autowired
     private UserRepository userRepository;
+
+
+//    @Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
+
 
     @RequestMapping("/")
     public String home(Model model){
@@ -57,6 +64,7 @@ public class HomeController {
             user.setRole("ROLE_USER");
             user.setEnabled(true);
             user.setImageUrl("default.png");
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             System.out.println("Agreement"+ true);
             System.out.println("User"+user);
@@ -74,18 +82,4 @@ public class HomeController {
             return "signup";
         }
     }
-
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @GetMapping("/test")
-//    @ResponseBody
-//    public String test(){
-//        User user = new User();
-//        user.setName("Hitansh");
-//        user.setEmail("hitansh@gmail.com");
-//
-//        userRepository.save(user);
-//        return "working";
-//    }
 }
